@@ -1,0 +1,45 @@
+{
+  "name": "tubesock",
+  "version": "1.0.0",
+  "description": "Watch youtube videos synchronously while chatting with your friends and family.",
+  "main": "server/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:dev": "webpack --config webpack.config.js -w",
+    "start:dev": "nodemon server/index.js",
+    "build": "webpack --config webpack.config.js",
+    "start": "node server/start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ta1265/tubesock.git"
+  },
+  "author": "Taylor Anderson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ta1265/tubesock/issues"
+  },
+  "homepage": "https://github.com/Ta1265/tubesock#readme",
+  "dependencies": {
+    "babel-loader": "^8.2.2",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-router-dom": "^5.2.0",
+    "socket.io": "^3.0.4",
+    "socket.io-client": "^3.0.4",
+    "webpack": "^4.44.2"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.12.11",
+    "@babel/preset-react": "^7.12.10",
+    "babel-core": "^6.26.3",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.21.5",
+    "webpack-cli": "^4.2.0"
+  }
+}

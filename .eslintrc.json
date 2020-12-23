@@ -1,0 +1,16 @@
+{
+  "extends": ["airbnb", "eslint:recommended"],
+  "plugins": [
+    "react",
+    "jsx-a11y",
+    "import"
+  ],
+  "rules": {
+    "react/prop-types": [0, {}],
+    "no-console": "off"
+  },
+  "env": {
+    "jest": true,
+    "browser": true
+  }
+}
