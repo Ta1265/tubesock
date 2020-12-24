@@ -17,7 +17,7 @@ export default function Chat({ socket }) {
   return (
     <div>
       {messages && messages.map((msg, i) => (
-        <div key={`msg_${i}`} className="message">{`${i + 1} ${msg}`}</div>
+        <div key={msg} className="message">{`${i + 1} ${msg}`}</div>
       ))}
       <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
       <button type="submit" onClick={sendMessage}>Send</button>
