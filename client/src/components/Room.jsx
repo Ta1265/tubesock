@@ -1,94 +1,68 @@
 import React, { createRef } from 'react';
-import CreateConnection from '../connections';
+// import CreateConnection from '../connections';
 import Chat from './Chat';
 import socket from '../socket';
-
+import MyRTCconnector from '../connections';
 // CreateConnection(socket);
 // ReceiveConnection(socket);
 
 export default class Room extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      connectionCount: 0,
+      usersInRoom: 0,
+      numberConnections: 1,
+      connectionState: 'not connected',
     };
-
     this.remoteStreams = [];
-    this.peerConnection = CreateConnection(socket);
+    this.rtcConnection = new MyRTCconnector(socket);
     this.localVideoRef = createRef();
     this.remoteVideoRef = createRef();
-
-    this.sendOffer = this.sendOffer.bind(this);
   }
 
   componentDidMount() {
     const { roomName, userName } = this.props;
-    this.setSocketListeners();
+    const { numberConnections } = this.state;
+    const number = numberConnections;
     socket.emit('join_room', { roomName, userName });
-    this.setRemoteMediaListener();
-    this.getLocalStream();
-  }
-
-  getLocalStream() {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        this.localVideoRef.current.srcObject = stream;
-        this.addLocalMediaToStream(stream);
+    this.rtcConnection.setListeners((connection, state) => {
+      this.setState({
+        numberConnections: number + connection,
+        connectionState: state,
       });
+    });
+    this.rtcConnection.setRemoteMediaListener((remoteStream) => {
+      this.remoteVideoRef.current.srcObject = remoteStream;
+      console.log(this.remoteVideoRef.current.srcObject);
+    });
+    this.rtcConnection.addLocalMediaStream((localStream) => {
+      this.localVideoRef.current.srcObject = localStream;
+    });
+    this.setSocketListeners();
   }
 
   setSocketListeners() {
     socket.on('connection-count', (count) => {
-      this.setState({ connectionCount: count });
+      this.setState({ usersInRoom: count });
     });
-  }
-
-  setRemoteMediaListener() {
-    this.peerConnection.addEventListener('track', (event) => {
-      console.log('setRemoteMediaListener triggered');
-      const stream = new MediaStream();
-      stream.addTrack(event.track, stream);
-      this.remoteVideoRef.current.srcObject = stream;
-      console.log(this.remoteVideoRef.current.srcObject);
-    });
-  }
-
-  addLocalMediaToStream(localMediaStream) {
-    localMediaStream.getTracks().forEach((track) => {
-      this.peerConnection.addTrack(track, localMediaStream);
-    });
-  }
-
-  sendOffer() {
-    // send connection offer
-    let offer;
-    this.peerConnection.createOffer()
-      .then((off) => {
-        offer = off;
-        return this.peerConnection.setLocalDescription(offer);
-      })
-      .then(() => socket.emit('webcam_con', { offer }))
-      .catch((err) => console.log('error createConnection', err.message));
   }
 
   render() {
-    const { connectionCount } = this.state;
+    const { usersInRoom, connectionState, numberConnections } = this.state;
     const { roomName, userName } = this.props;
 
     return (
       <div>
         <Chat socket={socket} />
-        <button type="submit" onClick={this.sendOffer}>sendOffer</button>
-        <button type="submit" onClick={this.reRender}>sendOffer</button>
+        <button type="submit" onClick={() => this.rtcConnection.sendOffer()}>sendOffer</button>
         {`
           roomName = ${roomName}
           userName = ${userName}
-          userCount = ${connectionCount}
-        `}
-        {/* <Chat socket={socket} /> */}
-        {/* <WebCam socket={socket} /> */}
+          userCount = ${usersInRoom}
+          numberConnections = ${numberConnections}
+          connectionState = ${connectionState}
 
+        `}
         localVideo
         <video
           ref={this.localVideoRef}
