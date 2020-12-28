@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+.app {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(51,51,51,0.7);
+  z-index: 10;
+  display: grid;
+  grid-template-rows: 5% 90%;
+}
+
+.navbar {
+  display: flex;
+  flex-direction:row;
+  justify-content: flex-start;
+  background-color: red;
+}
+
+.navtitle {
+  font-family: 'Fredoka One', cursive;
+}

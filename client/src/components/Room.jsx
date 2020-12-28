@@ -1,10 +1,8 @@
 import React, { createRef } from 'react';
-// import CreateConnection from '../connections';
 import Chat from './Chat';
 import socket from '../socket';
 import MyRTCconnector from '../connections';
-// CreateConnection(socket);
-// ReceiveConnection(socket);
+import YouTubePlayer from './YouTubePlayer';
 
 export default class Room extends React.Component {
   constructor(props) {
@@ -31,13 +29,13 @@ export default class Room extends React.Component {
         connectionState: state,
       });
     });
-    this.rtcConnection.setRemoteMediaListener((remoteStream) => {
-      this.remoteVideoRef.current.srcObject = remoteStream;
-      console.log(this.remoteVideoRef.current.srcObject);
-    });
-    this.rtcConnection.addLocalMediaStream((localStream) => {
-      this.localVideoRef.current.srcObject = localStream;
-    });
+    // this.rtcConnection.setRemoteMediaListener((remoteStream) => {
+    //   this.remoteVideoRef.current.srcObject = remoteStream;
+    //   console.log(this.remoteVideoRef.current.srcObject);
+    // });
+    // this.rtcConnection.addLocalMediaStream((localStream) => {
+    //   this.localVideoRef.current.srcObject = localStream;
+    // });
     this.setSocketListeners();
   }
 
@@ -78,6 +76,7 @@ export default class Room extends React.Component {
           muted
           onCanPlay={() => (this.remoteVideoRef.current.play())}
         />
+        <YouTubePlayer socket={socket} />
       </div>
     );
   }

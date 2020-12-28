@@ -49,6 +49,14 @@ io.on('connection', (socket) => {
     socket.to(roomName).emit('webcam_con', message); // sends to all in room except the sender
     // io.to(roomName).emit('webcam_con', message); // sends to all including sender
   });
+  socket.on('youtube-sync', (message) => {
+    const { roomName } = socketData;
+    io.to(roomName).emit('youtube-sync', message); // emit to whole room to sync playback
+  });
+  socket.on('change-video', (message) => {
+    const { roomName } = socketData;
+    io.to(roomName).emit('change-video', message); // emit to whole room to sync playback
+  });
 });
 
 // const { PORT } = process.env;

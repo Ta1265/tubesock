@@ -7,16 +7,33 @@ module.exports = {
     path: `${__dirname}/client/dist`,
   },
   module: {
-    rules: [{
-      test: /.jsx?$/,
-      resolve: { extensions: ['.js', '.jsx'] },
-      exclude: /node_modules/,
-      use: {
-        loader: 'babel-loader',
-        options: {
-          presets: ['@babel/preset-env', '@babel/preset-react'],
+    rules: [
+      {
+        test: /.jsx?$/,
+        resolve: { extensions: ['.js', '.jsx'] },
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
         },
       },
-    }],
+
+      {
+        test: /\.css$/i,
+        exclude: /node_modules/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[name]_[local]_[hash:base64:5]',
+            },
+          },
+        ],
+      },
+    ],
   },
 };
