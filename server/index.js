@@ -1,4 +1,5 @@
 require('dotenv').config();
+const axios = require('axios');
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -6,7 +7,15 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 
-const myRooms = {};
+const myRooms = {
+  exampleRoomName: {
+    cuedVideoId: '',
+    users: [{
+      userName: '',
+      id: '',
+    }],
+  },
+};
 
 io.on('connection', (socket) => {
   const { id } = socket;
@@ -16,15 +25,24 @@ io.on('connection', (socket) => {
   socket.on('join_room', ({ roomName, userName }) => {
     socketData = { roomName, userName };
     socket.join(roomName);
+
     if (myRooms[roomName]) {
-      myRooms[roomName] += 1;
+      myRooms[roomName].users.push({ userName, id });
+      socket.on('youtube-player-ready', () => {
+        io.to(roomName).emit('change-video', myRooms[roomName].cuedVideoId); // send qued video to new user / reset everyone;
+      });
     } else {
-      myRooms[roomName] = 1;
+      myRooms[roomName] = {
+        cuedVideoId: '',
+        users: [{
+          userName,
+          id,
+        }],
+      };
     }
-    const count = myRooms[roomName];
-    console.log('new connection count =', count);
+    const count = myRooms[roomName].users.length;
     io.in(roomName).emit('connection-count', count);
-    io.in(roomName).emit('message', `${userName} has joined room ${roomName}, total in room= ${myRooms[roomName]}`);
+    io.in(roomName).emit('message', `Server - ${userName} has joined room ${roomName}, total in room= ${myRooms[roomName]}`);
   });
 
   socket.on('message', (msg) => {
@@ -55,6 +73,7 @@ io.on('connection', (socket) => {
   });
   socket.on('change-video', (message) => {
     const { roomName } = socketData;
+    myRooms[roomName].cuedVideoId = message;
     io.to(roomName).emit('change-video', message); // emit to whole room to sync playback
   });
 });
@@ -65,6 +84,25 @@ const PORT = 3000;
 app.use(bodyParser.json());
 
 app.use(express.static('client/dist'));
+
+app.get('/search-videos/:searchTerms', (req, res) => {
+  const { searchTerms } = req.params;
+  const { YOUTUBE_API_KEY } = process.env;
+  console.log(searchTerms);
+  axios({
+    method: 'get',
+    url: 'https://www.googleapis.com/youtube/v3/search',
+    params: {
+      part: 'snippet',
+      q: searchTerms,
+      maxResults: 5,
+      key: YOUTUBE_API_KEY,
+      type: 'video',
+    },
+  })
+    .then((results) => res.send(results.data.items))
+    .catch((err) => console.log(err.message));
+});
 
 server.listen(PORT, (err) => {
   if (err) return console.log('error starting express msg-', err.message);

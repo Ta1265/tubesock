@@ -21,7 +21,6 @@ export default function Room(props) {
         <YouTubePlayer socket={socket} />
         <WebCamChat
           socket={socket}
-          setNumConnections={setNumConnections}
           numConnections={numConnections}
         />
       </div>

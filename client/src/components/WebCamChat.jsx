@@ -7,7 +7,7 @@ export default class WebCamChat extends React.Component {
     super(props);
     const { socket } = props;
     this.state = {
-
+      remoteOfferSent: false,
     };
     this.rtcConnection = new MyRTCconnector(socket);
     this.localVideoRef = createRef();
@@ -15,10 +15,10 @@ export default class WebCamChat extends React.Component {
   }
 
   componentDidMount() {
-    const { numConnections, setNumConnections } = this.props;
+    // const { numConnections, setNumConnections } = this.props;
     this.rtcConnection.setListeners((connection, state) => {
       console.log('rtcConnection listener in room compdidmnt got connection/state=', connection, state);
-      setNumConnections(numConnections + connection);
+      // setNumConnections(numConnections + connection);
     });
     this.rtcConnection.setRemoteMediaListener((remoteStream) => {
       this.remoteVideoRef.current.srcObject = remoteStream;
@@ -30,8 +30,26 @@ export default class WebCamChat extends React.Component {
   }
 
   render() {
+    const { remoteOfferSent } = this.state;
+    const { numConnections } = this.props;
     return (
       <div className="WebCamChatContainer">
+        {remoteOfferSent === false && numConnections > 1
+          ? (
+            <button
+              className="startVideoBtn"
+              type="button"
+              onClick={() => {
+                this.rtcConnection.sendOffer();
+                this.setState({ remoteOfferSent: true });
+              }}
+            >
+              Enter Video Chat
+            </button>
+          )
+          : (
+            null
+          )}
         <div className="webcamwrapper">
           <video
             className="video"
@@ -49,9 +67,6 @@ export default class WebCamChat extends React.Component {
             onCanPlay={() => (this.remoteVideoRef.current.play())}
           />
         </div>
-        <button className="startVideoBtn" type="button" onClick={() => this.rtcConnection.sendOffer()}>
-          Start video chat
-        </button>
       </div>
     );
   }

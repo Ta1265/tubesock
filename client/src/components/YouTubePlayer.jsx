@@ -6,7 +6,7 @@ export default function YouTubePlayer({ socket }) {
 
   function onPlayerReady() {
     console.log('ready to play?');
-    socket.emit('youtube-video-ready', 'ready');
+    socket.emit('youtube-player-ready', 'ready');
   }
 
   function loadVideoPlayer() {
