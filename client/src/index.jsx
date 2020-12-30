@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import 'tailwindcss/tailwind.css';
 import App from './components/App';
 import JoinPrompt from './components/JoinPrompt';
 import Room from './components/Room';

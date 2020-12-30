@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import uuid from 'react-uuid';
+import '../styles/Chat.css';
 
 export default function Chat({ socket }) {
   const [input, setInput] = useState('');
@@ -6,21 +8,30 @@ export default function Chat({ socket }) {
 
   useEffect(() => {
     socket.on('message', (newMsg) => {
-      setMessages((state) => [...state, newMsg]);
+      setMessages((state) => [newMsg, ...state]);
     });
   }, []);
 
-  const sendMessage = () => {
+  const sendMessage = (e) => {
+    e.preventDefault();
     socket.emit('message', input);
     setInput('');
   };
   return (
-    <div>
-      {messages && messages.map((msg, i) => (
-        <div key={msg} className="message">{`${i + 1} ${msg}`}</div>
-      ))}
-      <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
-      <button type="submit" onClick={sendMessage}>Send</button>
+    <div className="chatContainer">
+      <div className="messagesContainer">
+        {messages && messages.map((msg) => (
+          <div
+            key={uuid()}
+          >
+            {msg}
+          </div>
+        ))}
+      </div>
+      <form className="messageForm" onSubmit={sendMessage}>
+        <input className="messageFormText" type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+        <input type="submit" value="Send" />
+      </form>
     </div>
   );
 }

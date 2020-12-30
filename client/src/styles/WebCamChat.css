@@ -1,0 +1,36 @@
+.WebCamChatContainer {
+  position: absolute;
+  display: block;
+  height: min-content;
+  width: min-content;
+  width: 100%;
+  min-width: 375px;
+  height: min-content;
+}
+
+.webcamwrapper {
+  display:flex;
+  flex-direction: row;
+}
+.video {
+  align-self: auto;
+  width: 48%;
+  margin: 2px;
+}
+
+.startVideoBtn {
+  min-height: 20px;
+  align-items:center;
+  margin: 5px;
+  font-family:'Courier New', Courier, monospace;
+  font-weight: bold;
+  color:white;
+  background-color: red;
+  border: none;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.startVideoBtn:hover {
+  background-color: grey;
+}

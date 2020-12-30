@@ -1,0 +1,82 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap'); */
+/* .chatWrapper {
+
+  width: 35%;
+  min-width: 375px;
+  min-height: 500px;
+} */
+
+.chatContainer {
+  position: absolute;
+  flex:auto;
+  display: flex;
+  max-height: 400px;
+  min-height: 400px;
+  width: 100%;
+  min-width: 375px;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+
+}
+.messagesContainer {
+  flex: auto;
+  background: rgba(19, 46, 84, 0.292);
+  width: auto;
+  overflow-y: auto;
+  transform: rotate(180deg);
+  direction:rtl;
+  text-align:left;
+  border: 1px solid rgba(50, 50, 50, 0.292);
+  box-shadow: 0px 0px 0px 1px rgba(0,0,0,0.3);
+}
+
+.messagesContainer > div {
+  font-family:'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 12px;
+  color:black;
+  transform: rotate(180deg);
+  width: 99%;
+  word-wrap: break-word;
+  position: relative;
+  display: inline-block;
+}
+
+.messageForm {
+  position: relative;
+  display: grid;
+  grid-template-columns: 80% 20%;
+  align-items:auto;
+  padding:0;
+  margin: 0;
+  border-radius: 0;
+
+}
+input.messageFormText {
+
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  box-shadow: 0 0 1px #ccc, 0 5px 10px #ebebeb inset;
+  background-color:  rgba(19, 46, 84, 0.292);
+  min-height: 40px;
+  box-sizing:border-box;
+  padding:0;
+  margin: 0;
+  color: black;
+  font-family:'Courier New', Courier, monospace;
+  font-weight: bold;
+  outline: none;
+}
+.messageForm input[type="submit"] {
+  box-sizing: border-box;
+  height: auto;
+  font-family:'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 12px;
+  padding:0;
+  margin: 0;
+}
+
+
+

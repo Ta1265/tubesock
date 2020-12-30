@@ -1,0 +1,51 @@
+.youtubePlayerContainer{
+  position:absolute;
+  display:inline-block;
+  width: 100%;
+  min-width: 375px;
+}
+
+.videoWrapper {
+  pointer-events: none;
+  position: relative;
+  display: block;
+  width: 100%; /* width of iframe wrapper */
+  margin: auto;
+  padding: 0% 0% 56.25%; /* 16:9 ratio */
+  overflow: hidden;
+}
+
+.videoWrapper iframe {
+  position: absolute;
+  top: 0; bottom: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.svgWrapper {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.playIcon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.pauseIcon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.controlsWrapper {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: center;
+  height:55px;
+}
+

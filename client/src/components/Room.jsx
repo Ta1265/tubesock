@@ -1,83 +1,34 @@
-import React, { createRef } from 'react';
+import React, { useEffect } from 'react';
 import Chat from './Chat';
 import socket from '../socket';
-import MyRTCconnector from '../connections';
 import YouTubePlayer from './YouTubePlayer';
+import VideoSearch from './VideoSearch';
+import WebCamChat from './WebCamChat';
+import '../styles/Room.css';
 
-export default class Room extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      usersInRoom: 0,
-      numberConnections: 1,
-      connectionState: 'not connected',
-    };
-    this.remoteStreams = [];
-    this.rtcConnection = new MyRTCconnector(socket);
-    this.localVideoRef = createRef();
-    this.remoteVideoRef = createRef();
-  }
-
-  componentDidMount() {
-    const { roomName, userName } = this.props;
-    const { numberConnections } = this.state;
-    const number = numberConnections;
+export default function Room(props) {
+  const {
+    roomName, userName, setNumConnections, numConnections,
+  } = props;
+  useEffect(() => {
     socket.emit('join_room', { roomName, userName });
-    this.rtcConnection.setListeners((connection, state) => {
-      this.setState({
-        numberConnections: number + connection,
-        connectionState: state,
-      });
-    });
-    // this.rtcConnection.setRemoteMediaListener((remoteStream) => {
-    //   this.remoteVideoRef.current.srcObject = remoteStream;
-    //   console.log(this.remoteVideoRef.current.srcObject);
-    // });
-    // this.rtcConnection.addLocalMediaStream((localStream) => {
-    //   this.localVideoRef.current.srcObject = localStream;
-    // });
-    this.setSocketListeners();
-  }
+    socket.on('connection-count', (count) => setNumConnections(count));
+  }, []);
 
-  setSocketListeners() {
-    socket.on('connection-count', (count) => {
-      this.setState({ usersInRoom: count });
-    });
-  }
-
-  render() {
-    const { usersInRoom, connectionState, numberConnections } = this.state;
-    const { roomName, userName } = this.props;
-
-    return (
-      <div>
-        <Chat socket={socket} />
-        <button type="submit" onClick={() => this.rtcConnection.sendOffer()}>sendOffer</button>
-        {`
-          roomName = ${roomName}
-          userName = ${userName}
-          userCount = ${usersInRoom}
-          numberConnections = ${numberConnections}
-          connectionState = ${connectionState}
-
-        `}
-        localVideo
-        <video
-          ref={this.localVideoRef}
-          autoPlay
-          playsInline
-          muted
-        />
-        remote video
-        <video
-          ref={this.remoteVideoRef}
-          autoPlay
-          playsInline
-          muted
-          onCanPlay={() => (this.remoteVideoRef.current.play())}
-        />
+  return (
+    <div className="roomContainer">
+      <div className="containerOne">
         <YouTubePlayer socket={socket} />
+        <WebCamChat
+          socket={socket}
+          setNumConnections={setNumConnections}
+          numConnections={numConnections}
+        />
       </div>
-    );
-  }
+      <div className="containerTwo">
+        <Chat socket={socket} />
+        <VideoSearch selectVideo={(videoId) => socket.emit('change-video', videoId)} />
+      </div>
+    </div>
+  );
 }

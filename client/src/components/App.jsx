@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import styles from '../styles/app.css';
+import NavBar from './NavBar';
+import '../styles/App.css';
 
 export default function App({ JoinPrompt, Room }) {
   const [userName, setUserName] = useState('');
   const [roomName, setRoomName] = useState('');
+  const [numConnections, setNumConnections] = useState(0);
   const [prompt, setPrompt] = useState(true);
 
   return (
-    <div className={styles.app}>
-      <div className={styles.navbar}>
-        <div className={styles.navtitle}>TubeSock</div>
-        <div className={styles.navroomname}>{roomName || ''}</div>
-      </div>
+    <div className="app">
+      <NavBar
+        userName={userName}
+        roomName={roomName}
+        numConnections={numConnections}
+      />
       <div>
         {prompt
           ? (
@@ -25,6 +28,8 @@ export default function App({ JoinPrompt, Room }) {
             <Room
               userName={userName}
               roomName={roomName}
+              numConnections={numConnections}
+              setNumConnections={(num) => setNumConnections(num)}
             />
           )}
       </div>

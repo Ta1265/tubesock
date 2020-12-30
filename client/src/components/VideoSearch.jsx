@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import VideoListEntry from './VideoListEntry';
+import '../styles/VideoSearch.css';
 
 export default function VideoSearch({ selectVideo }) {
   const [searchVal, setSearchVal] = useState('');
@@ -20,11 +21,18 @@ export default function VideoSearch({ selectVideo }) {
       .then((results) => setVideoList(results.data.items))
       .catch((error) => console.log(error.message));
   }
-  console.log('render?', videoList);
+  console.log('render?', searchVal);
   return (
-    <div className="search">
-      <input className="search-input" tpye="text" value={searchVal} onChange={(e) => setSearchVal(e.target.value)} />
-      <button className="search-submit" type="button" onClick={() => getVideos()}>Search</button>
+    <div className="videoSearchWrapper">
+      <div className="search">
+        <span className="fa fa-search" />
+        <input
+          placeholder="Search for videos here"
+          value={searchVal}
+          onChange={(e) => setSearchVal(e.target.value)}
+          onKeyDown={(e) => (e.key === 'Enter' && getVideos())}
+        />
+      </div>
       {videoList.map((video) => (
         <VideoListEntry
           key={video.id.videoId}
@@ -32,8 +40,6 @@ export default function VideoSearch({ selectVideo }) {
           selectVideo={selectVideo}
         />
       ))}
-
     </div>
-
   );
 }
