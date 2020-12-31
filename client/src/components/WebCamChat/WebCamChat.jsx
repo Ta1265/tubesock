@@ -15,10 +15,8 @@ export default class WebCamChat extends React.Component {
   }
 
   componentDidMount() {
-    // const { numConnections, setNumConnections } = this.props;
     this.rtcConnection.setListeners((connection, state) => {
       console.log('rtcConnection listener in room compdidmnt got connection/state=', connection, state);
-      // setNumConnections(numConnections + connection);
     });
     this.rtcConnection.setRemoteMediaListener((remoteStream) => {
       this.remoteVideoRef.current.srcObject = remoteStream;

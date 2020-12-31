@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-// import VideoListEntry from './VideoListEntry';
 import './VideoSearch.css';
 
 export default function VideoSearch({ selectVideo }) {
