@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
-import Chat from './Chat';
-import socket from '../socket';
-import YouTubePlayer from './YouTubePlayer';
-import VideoSearch from './VideoSearch';
-import WebCamChat from './WebCamChat';
-import '../styles/Room.css';
+import io from 'socket.io-client';
+import Chat from '../Chat/Chat';
+import YouTubePlayer from '../YouTubePlayer/YouTubePlayer';
+import VideoSearch from '../VideoSearch/VideoSearch';
+import WebCamChat from '../WebCamChat/WebCamChat';
+import './Room.css';
+
+const socket = io();
 
 export default function Room(props) {
   const {

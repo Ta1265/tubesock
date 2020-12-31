@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/JoinPrompt.css';
+import './JoinPrompt.css';
 
 export default function JoinPrompt({ setUser, setRoom, setPrompt }) {
   const [userNameEntry, setUserName] = useState('');

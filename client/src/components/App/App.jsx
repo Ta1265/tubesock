@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import NavBar from './NavBar';
-import '../styles/App.css';
+import NavBar from '../NavBar/NavBar';
+import './App.css';
 
 export default function App({ JoinPrompt, Room }) {
   const [userName, setUserName] = useState('');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import uuid from 'react-uuid';
-import '../styles/Chat.css';
+import './Chat.css';
 
 export default function Chat({ socket }) {
   const [input, setInput] = useState('');

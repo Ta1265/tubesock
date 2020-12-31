@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import VideoListEntry from './VideoListEntry';
-import '../styles/VideoSearch.css';
+// import VideoListEntry from './VideoListEntry';
+import './VideoSearch.css';
 
 export default function VideoSearch({ selectVideo }) {
   const [searchVal, setSearchVal] = useState('');
@@ -24,11 +24,22 @@ export default function VideoSearch({ selectVideo }) {
         />
       </div>
       {videoList.map((video) => (
-        <VideoListEntry
+        // <VideoListEntry
+        //   key={video.id.videoId}
+        //   video={video}
+        //   selectVideo={selectVideo}
+        // />
+        <div
           key={video.id.videoId}
-          video={video}
-          selectVideo={selectVideo}
-        />
+          className="videoEntry"
+          role="button"
+          onClick={() => selectVideo(video.id.videoId)}
+          onKeyPress={() => selectVideo(video)}
+          tabIndex="0"
+        >
+          <img className="videoThumbnail" src={video.snippet.thumbnails.default.url} alt="" />
+          <div className="videoTitle">{video.snippet.title}</div>
+        </div>
       ))}
     </div>
   );

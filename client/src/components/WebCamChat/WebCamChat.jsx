@@ -1,6 +1,6 @@
 import React, { createRef } from 'react';
-import MyRTCconnector from '../connections';
-import '../styles/WebCamChat.css';
+import MyRTCconnector from './myRTCconnector';
+import './WebCamChat.css';
 
 export default class WebCamChat extends React.Component {
   constructor(props) {

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import '../styles/YouTubePlayer.css';
+import './YouTubePlayer.css';
 
 export default function YouTubePlayer({ socket }) {
   const playerRef = useRef();
