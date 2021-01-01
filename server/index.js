@@ -65,7 +65,7 @@ io.on('connection', (socket) => {
   // relay connection messages from clients to eachother
   socket.on('webcam_con', (message) => {
     const { roomName } = socketData;
-    console.log('relaying webcam_con message', message);
+    console.log('relaying webcam_con message', Object.keys(message));
     socket.to(roomName).emit('webcam_con', message); // sends to all in room except the sender
     // io.to(roomName).emit('webcam_con', message); // sends to all including sender
   });
