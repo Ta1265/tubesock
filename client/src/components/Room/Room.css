@@ -11,7 +11,7 @@
 
 .containerOne {
   min-width: 300px;
-  max-width: 1200px;
+  max-width: 780px;
   width:65%;
   position:relative;
   display:flex;
@@ -23,7 +23,7 @@
 .containerTwo {
   flex-grow:999;
   min-width: min-content;
-  max-width: 600px;
+  max-width: 420px;
   width: 35%;
   height: 100%;
   position:relative;

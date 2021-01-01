@@ -41,10 +41,16 @@
   height: 100%;
 }
 
+.rewindIcon {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .controlsWrapper {
   position: relative;
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto auto auto;
   justify-content: center;
   height:55px;
 }

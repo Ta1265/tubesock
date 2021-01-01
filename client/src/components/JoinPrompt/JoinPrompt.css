@@ -1,22 +1,26 @@
+.joinWrapper {
+  margin: auto;
+  width: 40%;
+
+}
 
 .formWrapper {
   display: block;
-  border-radius: 5px;
-  background-color: rgba(19, 46, 84, 0.292);
+  background-color: rgb(33,33,33);
   padding: 20px;
   max-width:500px;
   width:50%;
   margin-left:auto;
   margin-right:auto;
   margin-top:25%;
-  border: 2px solid #1c1c1c
+  border: 2px rgb(56, 56, 56);
 }
 
 label {
-  font-family: 'Courier New', Courier, monospace;
-  color: #f2f2f2;
+  font-family: 'Roboto', sans-serif;
   font-weight: bold;
   font-size: 18px;
+  color: white;
 }
 
 input[type=text], select {
@@ -24,19 +28,19 @@ input[type=text], select {
   padding: 12px 20px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: 1px solid #303030;
   box-sizing: border-box;
+  color: white;
+  background: rgb(18,18,18);
 }
 
 input[type=submit] {
   width: 100%;
-  background-color: #1c1c1c;
+  background-color: rgb(49,48,48);
   color: white;
   padding: 14px 20px;
   margin: 8px 0;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
 }
 

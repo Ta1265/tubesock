@@ -3,7 +3,8 @@
   flex-direction: row-wrap;
   justify-content: row-start;
   overflow: hidden;
-  background-color: rgba(8, 106, 255, 0.634);
+  background-color: rgb(33,33,33);
+
 }
 
 svg {
@@ -14,8 +15,8 @@ svg {
 
 .navIcon {
   float: left;
-  color: #f2f2f2;
-  padding: 5px 5px;
+  color: rgb(255,255,255);
+  padding: min(1%,10px) min(1%,10px);
   font-size: 28px;
   min-width: 50px;
 }
@@ -23,10 +24,10 @@ svg {
 .navTitle {
   position: relative;
   float: left;
-  color: #f2f2f2;
+  color:rgb(255,255,255);
   text-align: center;
   padding: 5px 5px;
-  font-family:'Courier New', Courier, monospace;
+  font-family: 'Roboto', sans-serif;
   font-weight:bold;
   font-size: min(3.5vw, 28px);
 }
@@ -35,21 +36,21 @@ svg {
   position:relvative;
   display:block;
   float: center;
-  color: #f2f2f2;
+  color: rgb(255,255,255);
   text-align: left;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 10%;
-  font-family:'Courier New', Courier, monospace;
+  font-family: 'Roboto', sans-serif;
   font-weight:bold;
-  font-size: 12px;
-  font-size: min(2vw, 12px);
+
+  font-size: min(2vw, 18px);
 
 }
 
 .navbar roomdata:hover {
   background-color: #ddd;
-  color: black;
+  color:rgb(255,255,255);
 }
 
 .navbar div.active {

@@ -7,7 +7,7 @@ export default class MyRTCconnector {
     this.remoteConnections = {};
   }
 
-  setListeners(callback) {
+  setListeners(disconnectCallback) {
     this.socket.on('webcam_con', (message) => {
       if (message.answer) {
         console.log('received answer');
@@ -44,11 +44,14 @@ export default class MyRTCconnector {
       const { connectionState } = this.peerConnection;
       if (connectionState === 'connected') {
         console.log('connected to peer', event);
-        callback(1, connectionState);
       }
-      if (connectionState === 'diconnected') {
+      if (connectionState === 'disconnected') {
         console.log('peer disconnected');
-        callback(-1, connectionState);
+        disconnectCallback();
+      }
+      if (connectionState === 'failed') {
+        console.log('peer disconnected');
+        disconnectCallback();
       }
     });
   }

@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
     }
     const count = myRooms[roomName].users.length;
     io.in(roomName).emit('connection-count', count);
-    io.in(roomName).emit('message', `Server - ${userName} has joined room ${roomName}, total in room= ${myRooms[roomName]}`);
+    io.in(roomName).emit('message', `Server - ${userName} has joined room ${roomName}, total in room= ${myRooms[roomName].users.length}`);
   });
 
   socket.on('message', (msg) => {
@@ -53,11 +53,13 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', (reason) => {
     const { roomName, userName } = socketData;
-    console.log(`${userName}, id ${id} has disconnection from${roomName}, ${reason}`);
-    myRooms[roomName] -= 1;
-    const count = myRooms[roomName];
-    io.in(roomName).emit('connection-count', count);
-    io.in(roomName).emit('message', `${userName} has disconnected from room ${roomName}`);
+    if (roomName) {
+      console.log(`${userName}, id ${id} has disconnection from${roomName}, ${reason}`);
+      myRooms[roomName].users = myRooms[roomName].users.filter((u) => u.userName !== userName);
+      console.log('users in room now -> ', myRooms[roomName]);
+      io.in(roomName).emit('connection-count', myRooms[roomName].users.length);
+      io.in(roomName).emit('message', `${userName} has disconnected from room ${roomName}`);
+    }
   });
 
   // relay connection messages from clients to eachother
@@ -108,3 +110,9 @@ server.listen(PORT, (err) => {
   if (err) return console.log('error starting express msg-', err.message);
   return console.log('Express server listening on port-', PORT);
 });
+
+// sudo iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT
+// sudo iptables -A INPUT -i eth0 -p tcp --dport 3000 -j ACCEPT
+// sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
+
+// sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000

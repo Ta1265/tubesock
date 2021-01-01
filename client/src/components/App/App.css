@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
 
 html, body {
   margin: 0;
   padding: 0;
   border: 0;
+  font-family: 'Roboto', sans-serif;
 
 }
 
@@ -13,7 +14,7 @@ html, body {
   height: 100%;
   display: grid;
   grid-template-rows: 5% 95%;
-  background-color:#d2d2dc
+  background-color: rgb(53,54,58);
 }
 
 
