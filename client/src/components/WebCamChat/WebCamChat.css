@@ -4,36 +4,21 @@
   height: min-content;
   width: min-content;
   width: 100%;
-  min-width: 375px;
+  min-width: 250px;
   height: min-content;
 }
 
 .webcamwrapper {
   display:flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
 }
+
 .video {
   align-self: auto;
-  width: 48%;
+  width: 40%;
   margin: 2px;
 }
 
-.startVideoBtn {
-  width: 100%;
-  height: 20px;
-  align-items:center;
-  margin: 5px;
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
-  color:black;
-  background-color: rgb(94, 15, 15);
-  border: none;
-  text-align: center;
-  border-radius: 2px;
 
-}
-
-.startVideoBtn:hover {
-  background-color: rgb(93, 92, 92);
-}

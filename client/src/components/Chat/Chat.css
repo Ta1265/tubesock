@@ -13,7 +13,7 @@
 }
 .messagesContainer {
   flex: auto;
-  background: rgba(19, 46, 84, 0.292);
+  background: rgb(53,54,58);
   width: auto;
   overflow-y: auto;
   transform: rotate(180deg);
@@ -28,6 +28,7 @@
   color:black;
   transform: rotate(180deg);
   width: 99%;
+  color:white;
   word-wrap: break-word;
   position: relative;
   display: inline-block;
@@ -46,7 +47,7 @@ input.messageFormText {
 
   border-left: .5px solid #767676;
   border-bottom: .5px solid #767676;
-  background-color:  rgba(19, 46, 84, 0.292);
+  background-color:  rgb(53,54,58);
   min-height: 40px;
   box-sizing:border-box;
   padding:0;

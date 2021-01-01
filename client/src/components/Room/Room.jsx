@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import io from 'socket.io-client';
 import Chat from '../Chat/Chat';
 import YouTubePlayer from '../YouTubePlayer/YouTubePlayer';
@@ -12,10 +12,6 @@ export default function Room(props) {
   const {
     roomName, userName, setNumConnections, numConnections,
   } = props;
-  useEffect(() => {
-    socket.emit('join_room', { roomName, userName });
-    socket.on('connection-count', (count) => setNumConnections(count));
-  }, []);
 
   return (
     <div className="roomContainer">
@@ -24,11 +20,14 @@ export default function Room(props) {
         <WebCamChat
           socket={socket}
           numConnections={numConnections}
+          setNumConnections={setNumConnections}
+          roomName={roomName}
+          userName={userName}
         />
       </div>
       <div className="containerTwo">
         <Chat socket={socket} />
-        <VideoSearch selectVideo={(videoId) => socket.emit('change-video', videoId)} />
+        <VideoSearch socket={socket} selectVideo={(videoId) => socket.emit('change-video', videoId)} />
       </div>
     </div>
   );

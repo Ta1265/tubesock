@@ -27,7 +27,7 @@ export default function JoinPrompt({ setUser, setRoom, setPrompt }) {
             <input type="text" value={userNameEntry} className="userNameInput" onChange={(e) => setUserName(e.target.value)} />
           </label>
           <label htmlFor="roomNameInput">
-            Join:
+            Room:
             <input type="text" value={roomToJoinEntry} name="roomname" className="roomNameInput" onChange={(e) => setRoomToJoin(e.target.value)} />
           </label>
           <input type="submit" value="Submit" />

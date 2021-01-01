@@ -6,10 +6,13 @@ const bodyParser = require('body-parser');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
+const YouTubeGetID = require('./youTubeUrlParser');
 
+// room data structure
 const myRooms = {
   exampleRoomName: {
     cuedVideoId: '',
+
     users: [{
       userName: '',
       id: '',
@@ -29,7 +32,7 @@ io.on('connection', (socket) => {
     if (myRooms[roomName]) {
       myRooms[roomName].users.push({ userName, id });
       socket.on('youtube-player-ready', () => {
-        io.to(roomName).emit('change-video', myRooms[roomName].cuedVideoId); // send qued video to new user / reset everyone;
+        io.to(roomName).emit('change-video-url', myRooms[roomName].cuedVideoUrl); // send qued video to new user / reset everyone;
       });
     } else {
       myRooms[roomName] = {
@@ -40,8 +43,11 @@ io.on('connection', (socket) => {
         }],
       };
     }
-    const count = myRooms[roomName].users.length;
-    io.in(roomName).emit('connection-count', count);
+    const usersMinusSelf = myRooms[roomName].users.filter((user) => user.id !== id);
+    if (usersMinusSelf.length > 0) {
+      socket.emit('getuptospeed-list', usersMinusSelf);
+    }
+    socket.to(roomName).emit('new-user-joined', id); // sends to all in room except the sender
     io.in(roomName).emit('message', `Server - ${userName} has joined room ${roomName}, total in room= ${myRooms[roomName].users.length}`);
   });
 
@@ -62,21 +68,25 @@ io.on('connection', (socket) => {
     }
   });
 
-  // relay connection messages from clients to eachother
-  socket.on('webcam_con', (message) => {
-    const { roomName } = socketData;
-    console.log('relaying webcam_con message', message);
-    socket.to(roomName).emit('webcam_con', message); // sends to all in room except the sender
-    // io.to(roomName).emit('webcam_con', message); // sends to all including sender
+  socket.on('peer_connection_relay', (message, toId) => {
+    const fromId = id;
+    socket.to(toId).emit('peer_connection_relay', message, fromId); // (private message);
   });
+
   socket.on('youtube-sync', (message) => {
     const { roomName } = socketData;
     io.to(roomName).emit('youtube-sync', message); // emit to whole room to sync playback
   });
-  socket.on('change-video', (message) => {
+  socket.on('change-video-id', (message) => {
     const { roomName } = socketData;
+
     myRooms[roomName].cuedVideoId = message;
-    io.to(roomName).emit('change-video', message); // emit to whole room to sync playback
+    io.to(roomName).emit('change-video-id', message); // emit to whole room to sync playback
+  });
+  socket.on('change-video-url', (message) => {
+    const { roomName } = socketData;
+    myRooms[roomName].cuedVideoId = YouTubeGetID(message);
+    io.to(roomName).emit('change-video-id', myRooms[roomName].cuedVideoId); // emit to whole room to sync playback
   });
 });
 
@@ -110,9 +120,3 @@ server.listen(PORT, (err) => {
   if (err) return console.log('error starting express msg-', err.message);
   return console.log('Express server listening on port-', PORT);
 });
-
-// sudo iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT
-// sudo iptables -A INPUT -i eth0 -p tcp --dport 3000 -j ACCEPT
-// sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000
-
-// sudo iptables -A PREROUTING -t nat -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 3000

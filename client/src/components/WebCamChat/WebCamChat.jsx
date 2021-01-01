@@ -1,71 +1,80 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { createRef } from 'react';
-import MyRTCconnector from './myRTCconnector';
+import MyRTCconnector from '../../myRTCconnector';
+import RemoteVideo from './RemoteVideo';
 import './WebCamChat.css';
 
 export default class WebCamChat extends React.Component {
   constructor(props) {
     super(props);
-    const { socket } = props;
     this.state = {
-      remoteOfferSent: false,
+      connections: [], // structure [ {socketId, rtcConnection}, ]
     };
-    this.rtcConnection = new MyRTCconnector(socket);
     this.localVideoRef = createRef();
-    this.remoteVideoRef = createRef();
+    this.disconnectCallBack = this.disconnectCallBack.bind(this);
   }
 
   componentDidMount() {
-    this.rtcConnection.setListeners(() => {
-      // disconnect callback
-      this.remoteVideoRef.current.srcObject = null;
-      this.setState({ remoteOfferSent: false });
+    const {
+      socket, setNumConnections, roomName, userName,
+    } = this.props;
+
+    socket.on('getuptospeed-list', (usersMinusSelf) => {
+      console.log('getuptospeed received');
+      setNumConnections(usersMinusSelf.length + 1);
+      const newConnections = usersMinusSelf.map((user) => this.createConnection(user.id));
+      this.setState({ connections: newConnections });
     });
-    this.rtcConnection.setRemoteMediaListener((remoteStream) => {
-      this.remoteVideoRef.current.srcObject = remoteStream;
-      console.log('gpt remote stream?', this.remoteVideoRef.current.srcObject);
+
+    socket.on('new-user-joined', (id) => {
+      console.log('new-user-joined received id=', id);
+      const { connections } = this.state;
+      const newConnection = this.createConnection(id);
+      setNumConnections(connections.length + 1);
+      console.log('old / new', connections, newConnection);
+      this.setState({ connections: [...connections, newConnection] });
     });
-    this.rtcConnection.addLocalMediaStream((localStream) => {
-      this.localVideoRef.current.srcObject = localStream;
+
+    socket.on('peer_connection_relay', (message, fromId) => {
+      const { connections } = this.state;
+      const designatedPeer = connections.filter((c) => c.socketId === fromId);
+      designatedPeer[0].rtcConnection.handleMessage(message);
     });
+
+    socket.emit('join_room', { roomName, userName });
+
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((localStream) => { this.localVideoRef.current.srcObject = localStream; });
+  }
+
+  disconnectCallBack(socketId) {
+    const { connections } = this.state;
+    const updatedConnections = connections.filter((con) => con.socketId !== socketId);
+    this.setState({ connections: updatedConnections });
+  }
+
+  createConnection(socketId) {
+    const { socket } = this.props;
+    const rtcConnection = new MyRTCconnector(socket, socketId, this.disconnectCallBack);
+    return { socketId, rtcConnection };
   }
 
   render() {
-    const { remoteOfferSent } = this.state;
-    const { numConnections } = this.props;
+    const { connections } = this.state;
+    const { socket } = this.props;
+    console.log('connections', connections);
     return (
       <div className="WebCamChatContainer">
-        {remoteOfferSent === false && numConnections > 1
-          ? (
-            <button
-              className="startVideoBtn"
-              type="button"
-              onClick={() => {
-                this.rtcConnection.sendOffer();
-                this.setState({ remoteOfferSent: true });
-              }}
-            >
-              Enter Video Chat
-            </button>
-          )
-          : (
-            null
-          )}
         <div className="webcamwrapper">
           <video
             className="video"
             ref={this.localVideoRef}
             autoPlay
             playsInline
-            muted
+            controls
+            muted={false}
           />
-          <video
-            className="video"
-            ref={this.remoteVideoRef}
-            autoPlay
-            playsInline
-            muted
-            onCanPlay={() => (this.remoteVideoRef.current.play())}
-          />
+          {connections.map((c) => <RemoteVideo key={c.socketId} socket={socket} connection={c} />) }
         </div>
       </div>
     );
