@@ -1,5 +1,6 @@
 import React, { createRef } from 'react';
 import MyRTCconnector from './myRTCconnector';
+import RemoteVideo from './RemoteVideo';
 import './WebCamChat.css';
 
 export default class WebCamChat extends React.Component {
@@ -7,7 +8,7 @@ export default class WebCamChat extends React.Component {
     super(props);
     const { socket } = props;
     this.state = {
-      remoteOfferSent: false,
+
     };
     this.rtcConnection = new MyRTCconnector(socket);
     this.localVideoRef = createRef();
@@ -16,40 +17,35 @@ export default class WebCamChat extends React.Component {
 
   componentDidMount() {
     this.rtcConnection.setListeners(() => {
-      // disconnect callback
       this.remoteVideoRef.current.srcObject = null;
-      this.setState({ remoteOfferSent: false });
     });
     this.rtcConnection.setRemoteMediaListener((remoteStream) => {
       this.remoteVideoRef.current.srcObject = remoteStream;
-      console.log('gpt remote stream?', this.remoteVideoRef.current.srcObject);
+      console.log('got remote stream?', this.remoteVideoRef.current.srcObject);
     });
-    this.rtcConnection.addLocalMediaStream((localStream) => {
-      this.localVideoRef.current.srcObject = localStream;
-    });
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+      .then((localStream) => {
+        this.localVideoRef.current.srcObject = localStream;
+      });
   }
 
   render() {
-    const { remoteOfferSent } = this.state;
+    // const { remoteOfferSent } = this.state;
     const { numConnections } = this.props;
+    console.log('webcam rerenderedA;');
     return (
       <div className="WebCamChatContainer">
-        {remoteOfferSent === false && numConnections > 1
-          ? (
-            <button
-              className="startVideoBtn"
-              type="button"
-              onClick={() => {
-                this.rtcConnection.sendOffer();
-                this.setState({ remoteOfferSent: true });
-              }}
-            >
-              Enter Video Chat
-            </button>
-          )
-          : (
-            null
-          )}
+
+        <button
+          className="startVideoBtn"
+          type="button"
+          onClick={() => {
+            this.rtcConnection.sendOffer();
+          }}
+        >
+          Enter Video Chat
+        </button>
+        )
         <div className="webcamwrapper">
           <video
             className="video"
@@ -58,14 +54,8 @@ export default class WebCamChat extends React.Component {
             playsInline
             muted
           />
-          <video
-            className="video"
-            ref={this.remoteVideoRef}
-            autoPlay
-            playsInline
-            muted
-            onCanPlay={() => (this.remoteVideoRef.current.play())}
-          />
+          {numConnections.map(() => <RemoteVideo socket={socket} />) }
+
         </div>
       </div>
     );
