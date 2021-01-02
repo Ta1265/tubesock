@@ -20,18 +20,15 @@ export default class WebCamChat extends React.Component {
     } = this.props;
 
     socket.on('getuptospeed-list', (usersMinusSelf) => {
-      console.log('getuptospeed received');
       setNumConnections(usersMinusSelf.length + 1);
       const newConnections = usersMinusSelf.map((user) => this.createConnection(user.id));
       this.setState({ connections: newConnections });
     });
 
     socket.on('new-user-joined', (id) => {
-      console.log('new-user-joined received id=', id);
       const { connections } = this.state;
       const newConnection = this.createConnection(id);
       setNumConnections(connections.length + 1);
-      console.log('old / new', connections, newConnection);
       this.setState({ connections: [...connections, newConnection] });
     });
 
@@ -62,7 +59,6 @@ export default class WebCamChat extends React.Component {
   render() {
     const { connections } = this.state;
     const { socket } = this.props;
-    console.log('connections', connections);
     return (
       <div className="WebCamChatContainer">
         <div className="webcamwrapper">

@@ -17,7 +17,6 @@ export default class MyRTCconnector {
 
   handleMessage(message) {
     if (message.answer) {
-      console.log('answer received from toId', this.toId);
       const remoteDesc = new RTCSessionDescription(message.answer);
       this.peerConnection.setRemoteDescription(remoteDesc);
     }
@@ -29,11 +28,11 @@ export default class MyRTCconnector {
           this.peerConnection.setLocalDescription(answer)
             .then(() => this.socket.emit('peer_connection_relay', { answer }, this.toId));
         })
-        .catch((err) => console.log('err receiving con ', err.message));
+        .catch((err) => console.err('err receiving con ', err.message));
     }
     if (message.iceCandidate) {
       this.peerConnection.addIceCandidate(message.iceCandidate)
-        .catch((err) => console.log('Error adding received ice candidate', err));
+        .catch((err) => console.err('Error adding received ice candidate', err));
     }
   }
 
@@ -45,7 +44,7 @@ export default class MyRTCconnector {
 
   handleConState() {
     const { connectionState } = this.peerConnection;
-    if (connectionState === 'connected') console.log('connected to peer id=', this.toId);
+    if (connectionState === 'connected') console.log('connected to peer id');
     if (connectionState === 'disconnected') this.disconnectCallBack(this.toId);
     if (connectionState === 'failed') this.disconnectCallBack(this.toId);
   }
@@ -63,10 +62,9 @@ export default class MyRTCconnector {
       .then(() => this.peerConnection.createOffer()
         .then((offer) => {
           this.peerConnection.setLocalDescription(offer)
-            .then(() => this.socket.emit('peer_connection_relay', { offer }, this.toId))
-            .then(() => console.log('offer sent to id-', this.toId));
+            .then(() => this.socket.emit('peer_connection_relay', { offer }, this.toId));
         })
-        .catch((err) => console.log('error createConnection', err.message)));
+        .catch((err) => console.err('error createConnection', err.message)));
   }
 
   addLocalMediaStream() {

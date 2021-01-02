@@ -15,7 +15,6 @@ export default function RemoteVideo({ connection }) {
     }, (Math.random() * 2000)); // randomize who sends the offer
   }, []);
 
-  console.log(remoteVideoRef.current);
   return (
 
     <video

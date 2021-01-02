@@ -43,6 +43,7 @@ io.on('connection', (socket) => {
         }],
       };
     }
+    console.log(`${userName}, has joined room - ${roomName}`);
     const usersMinusSelf = myRooms[roomName].users.filter((user) => user.id !== id);
     if (usersMinusSelf.length > 0) {
       socket.emit('getuptospeed-list', usersMinusSelf);
@@ -53,7 +54,7 @@ io.on('connection', (socket) => {
 
   socket.on('message', (msg) => {
     const { roomName, userName } = socketData;
-    console.log('received message from client ->', msg);
+    console.log(`Room-${roomName}, userName-${userName} received message from client ->`, msg);
     io.in(roomName).emit('message', `${userName} says - ${msg}`);
   });
 
@@ -62,7 +63,7 @@ io.on('connection', (socket) => {
     if (roomName) {
       console.log(`${userName}, id ${id} has disconnection from${roomName}, ${reason}`);
       myRooms[roomName].users = myRooms[roomName].users.filter((u) => u.userName !== userName);
-      console.log('users in room now -> ', myRooms[roomName]);
+      console.log('room data ', myRooms[roomName]);
       io.in(roomName).emit('connection-count', myRooms[roomName].users.length);
       io.in(roomName).emit('message', `${userName} has disconnected from room ${roomName}`);
     }

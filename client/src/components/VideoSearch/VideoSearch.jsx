@@ -9,9 +9,9 @@ export default function VideoSearch({ socket }) {
   function getVideos() {
     axios.get(`/search-videos/${searchVal}`)
       .then((results) => setVideoList(results.data))
-      .catch((err) => console.log(err.message));
+      .catch((err) => err.message);
   }
-  console.log('render?', searchVal);
+
   return (
     <div className="videoSearchWrapper">
       <div className="search">

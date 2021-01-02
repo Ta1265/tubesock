@@ -30,10 +30,7 @@ export default function YouTubePlayer({ socket }) {
     if (state === 'reset') playerRef.current.seekTo(0);
   });
 
-  socket.on('change-video-id', (videoId) => {
-    console.log('videoid=', videoId);
-    playerRef.current.cueVideoById(videoId, 0);
-  });
+  socket.on('change-video-id', (videoId) => playerRef.current.cueVideoById(videoId, 0));
 
   useEffect(() => {
     const tag = document.createElement('script');
