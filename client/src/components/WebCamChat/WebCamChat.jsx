@@ -68,7 +68,7 @@ export default class WebCamChat extends React.Component {
             autoPlay
             playsInline
             controls
-            muted={false}
+            muted
           />
           {connections.map((c) => <RemoteVideo key={c.socketId} socket={socket} connection={c} />) }
         </div>
