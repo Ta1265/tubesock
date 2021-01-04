@@ -1,4 +1,4 @@
 /node_modules
 .env
 *.pem
-/bundle/bundle.js
+client/dist/bundle.js
