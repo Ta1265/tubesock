@@ -28,11 +28,12 @@ io.on('connection', (socket) => {
   socket.on('join_room', ({ roomName, userName }) => {
     socketData = { roomName, userName };
     socket.join(roomName);
+    console.log(`${userName}, has joined room - ${roomName}`);
 
     if (myRooms[roomName]) {
       myRooms[roomName].users.push({ userName, id });
       socket.on('youtube-player-ready', () => {
-        io.to(roomName).emit('change-video-url', myRooms[roomName].cuedVideoUrl); // send qued video to new user / reset everyone;
+        io.in(roomName).emit('change-video-id', myRooms[roomName].cuedVideoId); // send qued video to new user / reset everyone;
       });
     } else {
       myRooms[roomName] = {
@@ -43,11 +44,12 @@ io.on('connection', (socket) => {
         }],
       };
     }
-    console.log(`${userName}, has joined room - ${roomName}`);
+
     const usersMinusSelf = myRooms[roomName].users.filter((user) => user.id !== id);
     if (usersMinusSelf.length > 0) {
       socket.emit('getuptospeed-list', usersMinusSelf);
     }
+
     socket.to(roomName).emit('new-user-joined', id); // sends to all in room except the sender
     io.in(roomName).emit('message', `Server - ${userName} has joined room ${roomName}, total in room= ${myRooms[roomName].users.length}`);
   });
