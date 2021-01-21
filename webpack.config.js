@@ -1,11 +1,12 @@
 module.exports = {
-  // mode: 'development',
-  // devtool: 'inline-source-map',
+  mode: 'development',
+  devtool: 'inline-source-map',
   entry: `${__dirname}/client/src/index.jsx`,
   output: {
     filename: 'bundle.js',
     path: `${__dirname}/client/dist`,
   },
+
   module: {
     rules: [
       {
@@ -20,13 +21,12 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/i,
+        test: /\.css$/,
         exclude: /node_modules/,
         use: ['style-loader', {
           loader: 'css-loader',
           options: {
             importLoaders: 1,
-
           },
         }],
       },

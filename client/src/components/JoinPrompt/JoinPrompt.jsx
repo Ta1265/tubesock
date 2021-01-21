@@ -12,14 +12,11 @@ export default function JoinPrompt({ setUser, setRoom, setPrompt }) {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            if (userNameEntry.length > 1 && userNameEntry.length < 10
-              && roomToJoinEntry.length > 1 && roomToJoinEntry.length < 10) {
-              setRoom(roomToJoinEntry);
-              setUser(userNameEntry);
-              setPrompt(false);
-            } else {
-              alert('Enter a username and a roomname between 1 and 10 characters');
-            }
+            if (userNameEntry.length < 1) setUser('Anonymous');
+            else setUser(roomToJoinEntry);
+            if (roomToJoinEntry.length < 1) setRoom('testroom');
+            else setRoom(roomToJoinEntry);
+            setPrompt(false);
           }}
         >
           <label htmlFor="userNameInput">
@@ -31,6 +28,7 @@ export default function JoinPrompt({ setUser, setRoom, setPrompt }) {
             <input type="text" value={roomToJoinEntry} name="roomname" className="roomNameInput" onChange={(e) => setRoomToJoin(e.target.value)} />
           </label>
           <input type="submit" value="Submit" />
+          <input className="tryitbtn" type="submit" value="Just try it! (random)" />
         </form>
       </div>
 
