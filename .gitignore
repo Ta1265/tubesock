@@ -2,3 +2,4 @@
 .env
 *.pem
 client/dist/bundle.js
+server/built
