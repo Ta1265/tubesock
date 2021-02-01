@@ -55,6 +55,7 @@ io.on('connection', (socket: any): void => {
   });
 
   socket.on('disconnect', (reason: any) => {
+    if (!user) return console.log(`visitor has disconnected before entering a room`);
     const { roomName, id, userName } = user;
     const { users } = roomMap[roomName]
     if (roomName) {

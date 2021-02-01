@@ -4,12 +4,10 @@
   "description": "Watch youtube videos synchronously while chatting with your friends and family.",
   "main": "server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc-complile": "tsc",
-    "start-server:dev": "concurrently \"tsc -w\" \"nodemon ./server/built/js/index.js\"",
-    "start-server": "node ./server/built/js/index.js",
-    "build-client:dev": "webpack --config webpack.config.js -w",
-    "build-client": "webpack --config webpack.config.js"
+    "start:dev": "concurrently \"tsc -w\" \"nodemon ./server/built/js/index.js\"",
+    "start": "tsc && node ./server/built/js/index.js",
+    "build:dev": "webpack --config webpack.config.js --mode=development -w",
+    "build": "webpack --config webpack.config.js --mode=production"
   },
   "repository": {
     "type": "git",
