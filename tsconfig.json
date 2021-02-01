@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs", // allows us to specify the target JavaScript version that compiler will output
+    "moduleResolution": "node", // this helps the compiler figure out what an import refers to. The value node mimics the Node module resolution mechanism.e
+    "esModuleInterop": true, // allows us to compile ES6 modules to commonjs modules
+    "outDir": "./server/built/js", // specifies where the output of the compiled is going to be located
+    "sourceMap": true,
+    "strict": true, // is an option that enables strict type-checking options
+    "target": "es6" // allows us to specify the target JavaScript version that compiler will output
+  },
+  "include": [
+    "./server/**/*.ts",
+  ],
+  "exclude": [
+    "./server/built",
+    "node_modules",
+  ]
+}
