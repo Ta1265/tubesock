@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './VideoSearch.css';
 
-export default function VideoSearch({ socket }) {
-  const [searchVal, setSearchVal] = useState('');
-  const [videoList, setVideoList] = useState([]);
+interface Props {
+  socket: SocketIOClient.Socket;
+}
+
+export default function VideoSearch({ socket }: Props): JSX.Element {
+  const [searchVal, setSearchVal] = useState<string>('');
+  const [videoList, setVideoList] = useState<Array<any>>([]);
   const [urlVal, setUrlVal] = useState('');
   function getVideos() {
-    axios.get(`/search-videos/${searchVal}`)
+    axios
+      .get(`/search-videos/${searchVal}`)
       .then((results) => setVideoList(results.data))
       .catch((err) => err.message);
   }
@@ -19,7 +24,7 @@ export default function VideoSearch({ socket }) {
           placeholder="Enter a YouTube video URL here"
           value={urlVal}
           onChange={(e) => setUrlVal(e.target.value)}
-          onKeyDown={(e) => (e.key === 'Enter' && socket.emit('change-video-url', urlVal))}
+          onKeyDown={(e) => e.key === 'Enter' && socket.emit('change-video-url', urlVal)}
         />
       </div>
       <div className="search">
@@ -27,7 +32,7 @@ export default function VideoSearch({ socket }) {
           placeholder="Search for videos by key words here"
           value={searchVal}
           onChange={(e) => setSearchVal(e.target.value)}
-          onKeyDown={(e) => (e.key === 'Enter' && getVideos())}
+          onKeyDown={(e) => e.key === 'Enter' && getVideos()}
         />
       </div>
       {videoList.map((video) => (
@@ -35,11 +40,15 @@ export default function VideoSearch({ socket }) {
           key={video.id.videoId}
           className="videoEntry"
           role="button"
+          tabIndex={0}
           onClick={() => socket.emit('change-video-id', video.id.videoId)}
           onKeyPress={() => socket.emit('change-video-id', video.id.videoId)}
-          tabIndex="0"
         >
-          <img className="videoThumbnail" src={video.snippet.thumbnails.default.url} alt="" />
+          <img
+            className="videoThumbnail"
+            src={video.snippet.thumbnails.default.url}
+            alt=""
+          />
           <div className="videoTitle">{video.snippet.title}</div>
         </div>
       ))}

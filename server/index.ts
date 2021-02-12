@@ -1,8 +1,10 @@
-require('dotenv').config();
+/* eslint-disable @typescript-eslint/no-var-requires */
 import axios from 'axios';
 import express from 'express';
 import bodyParser from 'body-parser';
 import YouTubeGetID from './youTubeUrlParser';
+
+require('dotenv').config();
 
 const app = express();
 const server = require('http').createServer(app);
@@ -19,7 +21,9 @@ interface User {
   roomName: string;
 }
 
-interface roomMap { [keyRoomName: string]: Room; }
+interface roomMap {
+  [keyRoomName: string]: Room;
+}
 
 const roomMap: roomMap = {};
 
@@ -45,24 +49,36 @@ io.on('connection', (socket: any): void => {
       socket.emit('getuptospeed-list', minusSelf);
     }
     socket.to(roomName).emit('new-user-joined', user.id); // sends to all in room except the sender
-    io.in(roomName).emit('message', `Server - ${user.userName} has joined room ${roomName}, total in room= ${roomMap[roomName].users.length}`);
+    io.in(roomName).emit(
+      'message',
+      `Server - ${user.userName} has joined room ${roomName}, total in room= ${roomMap[roomName].users.length}`
+    );
   });
 
   socket.on('message', (msg: any) => {
     const { userName, roomName } = user;
-    console.log(`Room-${roomName}, userName-${userName} received message from client ->`, msg);
+    console.log(
+      `Room-${roomName}, userName-${userName} received message from client ->`,
+      msg
+    );
     io.in(roomName).emit('message', `${userName} says - ${msg}`);
   });
 
   socket.on('disconnect', (reason: any) => {
-    if (!user) return console.log(`visitor has disconnected before entering a room`);
+    if (!user)
+      return console.log(`visitor has disconnected before entering a room`);
     const { roomName, id, userName } = user;
-    const { users } = roomMap[roomName]
+    const { users } = roomMap[roomName];
     if (roomName) {
-      console.log(`${userName}, id ${id} has disconnection from${roomName}, ${reason}`);
+      console.log(
+        `${userName}, id ${id} has disconnection from${roomName}, ${reason}`
+      );
       roomMap[roomName].users = users.filter((i) => i.id !== id);
       io.in(roomName).emit('connection-count', roomMap[roomName].users.length);
-      io.in(roomName).emit('message', `${userName} has disconnected from room ${roomName}`);
+      io.in(roomName).emit(
+        'message',
+        `${userName} has disconnected from room ${roomName}`
+      );
     }
   });
 
@@ -70,7 +86,6 @@ io.on('connection', (socket: any): void => {
     const fromId = user.id;
     console.log('fromid', fromId, 'toId', toId);
     socket.to(toId).emit('peer_connection_relay', message, fromId); // (private message);
-
   });
 
   socket.on('youtube-sync', (message: any) => {
@@ -90,14 +105,13 @@ io.on('connection', (socket: any): void => {
 });
 
 // const { PORT } = process.env;
-const PORT: number = 3000;
+const PORT = 3000;
 
 app.use(bodyParser.json());
 
 app.use(express.static('client/dist'));
 
 app.get('/search-videos/:searchTerms', (req: any, res: any) => {
-
   const { searchTerms } = req.params;
   const { YOUTUBE_API_KEY } = process.env;
   console.log(searchTerms);
