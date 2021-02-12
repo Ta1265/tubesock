@@ -2,7 +2,13 @@
 import React, { useState } from 'react';
 import './JoinPrompt.css';
 
-export default function JoinPrompt({ setUser, setRoom, setPrompt }) {
+interface Props {
+  setUser: (userName: string) => void;
+  setRoom: (roomName: string) => void;
+  setPrompt: (display: boolean) => void;
+}
+
+const JoinPrompt = ({ setUser, setRoom, setPrompt }: Props): JSX.Element => {
   const [userNameEntry, setUserName] = useState('');
   const [roomToJoinEntry, setRoomToJoin] = useState('');
 
@@ -21,17 +27,33 @@ export default function JoinPrompt({ setUser, setRoom, setPrompt }) {
         >
           <label htmlFor="userNameInput">
             Username:
-            <input type="text" value={userNameEntry} className="userNameInput" onChange={(e) => setUserName(e.target.value)} />
+            <input
+              type="text"
+              value={userNameEntry}
+              className="userNameInput"
+              onChange={(e) => setUserName(e.target.value)}
+            />
           </label>
           <label htmlFor="roomNameInput">
             Room:
-            <input type="text" value={roomToJoinEntry} name="roomname" className="roomNameInput" onChange={(e) => setRoomToJoin(e.target.value)} />
+            <input
+              type="text"
+              value={roomToJoinEntry}
+              name="roomname"
+              className="roomNameInput"
+              onChange={(e) => setRoomToJoin(e.target.value)}
+            />
           </label>
           <input type="submit" value="Submit" />
-          <input className="tryitbtn" type="submit" value="Just try it! (random)" />
+          <input
+            className="tryitbtn"
+            type="submit"
+            value="Just try it! (random)"
+          />
         </form>
       </div>
-
     </div>
   );
-}
+};
+
+export default JoinPrompt;

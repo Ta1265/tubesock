@@ -1,26 +1,19 @@
 /********
- tsconfig to be used by webpack for client files
+ tsconfig to be used to compile server files
 *********/
 {
   "compilerOptions": {
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "allowJs": true,
-    "module": "commonjs", // Compatible with both Node.js and browser
+    "module": "umd", // Compatible with both Node.js and browser
     "moduleResolution": "node", // Tell tsc to look in node_modules for modules
     "esModuleInterop": true, // allows us to compile ES6 modules to commonjs modules
     "sourceMap": true,
     "strict": true, // is an option that enables strict type-checking options
     "target": "es5", // allows us to specify the target JavaScript version that compiler will output
     "jsx": "react",
+    "outDir": "./server/built/js/"
   },
   "include": [
-    "./client/src/**/*.ts",
-    "./client/src/**/*.tsx",
-    "./client/src/*.ts",
-    "./client/src/*.tsx",
-    // "./server/*.ts"
+    "./server/**/*.ts",
   ],
   "exclude": [
     "node_modules",
