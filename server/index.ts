@@ -51,7 +51,7 @@ io.on('connection', (socket: any): void => {
     socket.to(roomName).emit('new-user-joined', user.id); // sends to all in room except the sender
     io.in(roomName).emit(
       'message',
-      `Server - ${user.userName} has joined room ${roomName}, total in room= ${roomMap[roomName].users.length}`
+      `Server - ${user.userName} has joined room ${roomName}, total in room= ${roomMap[roomName].users.length}`,
     );
   });
 
@@ -59,26 +59,28 @@ io.on('connection', (socket: any): void => {
     const { userName, roomName } = user;
     console.log(
       `Room-${roomName}, userName-${userName} received message from client ->`,
-      msg
+      msg,
     );
     io.in(roomName).emit('message', `${userName} says - ${msg}`);
   });
 
   socket.on('disconnect', (reason: any) => {
-    if (!user)
-      return console.log(`visitor has disconnected before entering a room`);
-    const { roomName, id, userName } = user;
-    const { users } = roomMap[roomName];
-    if (roomName) {
-      console.log(
-        `${userName}, id ${id} has disconnection from${roomName}, ${reason}`
-      );
-      roomMap[roomName].users = users.filter((i) => i.id !== id);
-      io.in(roomName).emit('connection-count', roomMap[roomName].users.length);
-      io.in(roomName).emit(
-        'message',
-        `${userName} has disconnected from room ${roomName}`
-      );
+    if (!user) {
+      console.log('visitor has disconnected before entering a room');
+    } else {
+      const { roomName, userName } = user;
+      const { users } = roomMap[roomName];
+      if (roomName) {
+        console.log(
+          `${userName}, id ${id} has disconnection from${roomName}, ${reason}`,
+        );
+        roomMap[roomName].users = users.filter((i) => i.id !== id);
+        io.in(roomName).emit('connection-count', roomMap[roomName].users.length);
+        io.in(roomName).emit(
+          'message',
+          `${userName} has disconnected from room ${roomName}`,
+        );
+      }
     }
   });
 

@@ -4,8 +4,8 @@
   "description": "Watch youtube videos synchronously while chatting with your friends and family.",
   "main": "server/index.js",
   "scripts": {
-    "start:dev": "concurrently \"tsc -w\" \"nodemon ./server/built/js/index.js\"",
-    "start": "tsc --p tsconfig.server.json && node ./server/built/js/index.js",
+    "start:dev": "ts-node ./server/index.ts",
+    "start": "ts-node --transpile-only ./server/index.ts",
     "build:dev": "webpack --config webpack.config.js --mode=development -w",
     "build": "webpack --config webpack.config.js --mode=production"
   },
