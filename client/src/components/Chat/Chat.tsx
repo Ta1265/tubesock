@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as uuid from 'uuid';
-import './Chat.css';
+import styles from './Chat.module.css';
 
 interface Props {
   socket: SocketIOClient.Socket;
@@ -22,13 +22,13 @@ export default function Chat({ socket }: Props): JSX.Element {
     setInput('');
   };
   return (
-    <div className="chatContainer">
-      <div className="messagesContainer">
+    <div className={styles.chatContainer}>
+      <div className={styles.messagesContainer}>
         {messages && messages.map((msg) => <div key={uuid.v4()}>{msg}</div>)}
       </div>
-      <form className="messageForm" onSubmit={sendMessage}>
+      <form className={styles.messageForm} onSubmit={sendMessage}>
         <input
-          className="messageFormText"
+          className={styles.messageFormText}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}

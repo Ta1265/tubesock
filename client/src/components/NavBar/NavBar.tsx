@@ -1,5 +1,5 @@
 import React from 'react';
-import './NavBar.css';
+import styles from './NavBar.module.css';
 
 interface Props {
   userName: string;
@@ -8,10 +8,10 @@ interface Props {
 }
 
 const NavBar = ({ userName, roomName, numConnections }: Props): JSX.Element => (
-  <nav className="navbar">
-    <div className="navIcon">
+  <nav className={styles.navbar}>
+    <div className={styles.navIcon}>
       <svg
-        className="sockIconSvg"
+        className={styles.sockIconSvg}
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
         focusable="false"
@@ -23,16 +23,16 @@ const NavBar = ({ userName, roomName, numConnections }: Props): JSX.Element => (
         />
       </svg>
     </div>
-    <div className="navTitle">TubeSock</div>
-    <div className="roomData">
+    <div className={styles.navTitle}>TubeSock</div>
+    <div className={styles.roomData}>
       Username:
       {` ${userName || ''}`}
     </div>
-    <div className="roomData">
+    <div className={styles.roomData}>
       Room:
       {` ${roomName || ''}`}
     </div>
-    <div className="roomData">
+    <div className={styles.roomData}>
       User count:
       {` ${numConnections || ''}`}
     </div>

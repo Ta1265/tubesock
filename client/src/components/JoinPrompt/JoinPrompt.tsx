@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 import React, { useState } from 'react';
-import './JoinPrompt.css';
+import styles from './JoinPrompt.module.css';
 
 interface Props {
   setUser: (userName: string) => void;
@@ -13,8 +13,8 @@ const JoinPrompt = ({ setUser, setRoom, setPrompt }: Props): JSX.Element => {
   const [roomToJoinEntry, setRoomToJoin] = useState('');
 
   return (
-    <div className="joinWrapper">
-      <div className="formWrapper">
+    <div className={styles.joinWrapper}>
+      <div className={styles.formWrapper}>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -25,28 +25,28 @@ const JoinPrompt = ({ setUser, setRoom, setPrompt }: Props): JSX.Element => {
             setPrompt(false);
           }}
         >
-          <label htmlFor="userNameInput">
+          <label htmlFor={styles.userNameInput}>
             Username:
             <input
               type="text"
               value={userNameEntry}
-              className="userNameInput"
+              className={styles.userNameInput}
               onChange={(e) => setUserName(e.target.value)}
             />
           </label>
-          <label htmlFor="roomNameInput">
+          <label htmlFor={styles.roomNameInput}>
             Room:
             <input
               type="text"
               value={roomToJoinEntry}
               name="roomname"
-              className="roomNameInput"
+              className={styles.roomNameInput}
               onChange={(e) => setRoomToJoin(e.target.value)}
             />
           </label>
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Join Room" />
           <input
-            className="tryitbtn"
+            className={styles.tryitbtn}
             type="submit"
             value="Just try it! (random)"
           />

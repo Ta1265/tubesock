@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import './YouTubePlayer.css';
+import styles from './YouTubePlayer.module.css';
 
 interface Props {
   socket: SocketIOClient.Socket;
@@ -48,20 +48,20 @@ export default function myYouTubePlayer({ socket }: Props): JSX.Element {
   }, []);
 
   return (
-    <div className="youtubePlayerContainer">
-      <div className="videoWrapper">
-        <div ref={playerRef} id="player" className="player" />
+    <div className={styles.youtubePlayerContainer}>
+      <div className={styles.videoWrapper}>
+        <div ref={playerRef} id="player" className={styles.player} />
       </div>
-      <div className="controlsWrapper">
+      <div className={styles.controlsWrapper}>
         <div
           role="button"
           tabIndex={0}
-          className="svgWrapper"
+          className={styles.svgWrapper}
           onClick={() => socket.emit('youtube-sync', 'reset')}
           onKeyPress={() => socket.emit('youtube-sync', 'reset')}
         >
           <svg
-            className="rewindIcon"
+            className={styles.rewindIcon}
             aria-hidden="true"
             focusable="false"
             xmlns="http://www.w3.org/2000/svg"
@@ -74,14 +74,14 @@ export default function myYouTubePlayer({ socket }: Props): JSX.Element {
           </svg>
         </div>
         <div
-          className="svgWrapper"
+          className={styles.svgWrapper}
           onClick={() => socket.emit('youtube-sync', 'play')}
           role="button"
           tabIndex={0}
           onKeyPress={() => socket.emit('youtube-sync', 'play')}
         >
           <svg
-            className="playIcon"
+            className={styles.playIcon}
             aria-hidden="true"
             focusable="false"
             xmlns="http://www.w3.org/2000/svg"
@@ -94,14 +94,14 @@ export default function myYouTubePlayer({ socket }: Props): JSX.Element {
           </svg>
         </div>
         <div
-          className="svgWrapper"
+          className={styles.svgWrapper}
           onClick={() => socket.emit('youtube-sync', 'pause')}
           role="button"
           tabIndex={0}
           onKeyPress={() => socket.emit('youtube-sync', 'pause')}
         >
           <svg
-            className="pauseIcon"
+            className={styles.pauseIcon}
             aria-hidden="true"
             focusable="false"
             xmlns="http://www.w3.org/2000/svg"

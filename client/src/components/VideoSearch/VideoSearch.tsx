@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './VideoSearch.css';
+import styles from './VideoSearch.module.css';
 
 interface Props {
   socket: SocketIOClient.Socket;
@@ -18,8 +18,8 @@ export default function VideoSearch({ socket }: Props): JSX.Element {
   }
 
   return (
-    <div className="videoSearchWrapper">
-      <div className="search">
+    <div className={styles.videoSearchWrapper}>
+      <div className={styles.search}>
         <input
           placeholder="Enter a YouTube video URL here"
           value={urlVal}
@@ -27,7 +27,7 @@ export default function VideoSearch({ socket }: Props): JSX.Element {
           onKeyDown={(e) => e.key === 'Enter' && socket.emit('change-video-url', urlVal)}
         />
       </div>
-      <div className="search">
+      <div className={styles.search}>
         <input
           placeholder="Search for videos by key words here"
           value={searchVal}
@@ -38,18 +38,18 @@ export default function VideoSearch({ socket }: Props): JSX.Element {
       {videoList.map((video) => (
         <div
           key={video.id.videoId}
-          className="videoEntry"
+          className={styles.videoEntry}
           role="button"
           tabIndex={0}
           onClick={() => socket.emit('change-video-id', video.id.videoId)}
           onKeyPress={() => socket.emit('change-video-id', video.id.videoId)}
         >
           <img
-            className="videoThumbnail"
+            className={styles.videoThumbnail}
             src={video.snippet.thumbnails.default.url}
             alt=""
           />
-          <div className="videoTitle">{video.snippet.title}</div>
+          <div className={styles.videoTitle}>{video.snippet.title}</div>
         </div>
       ))}
     </div>
