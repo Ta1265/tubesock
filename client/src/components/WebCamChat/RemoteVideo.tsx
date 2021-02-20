@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { useEffect, useRef } from 'react';
 import MyRTCconnector from '../../myRTCconnector';
+import styles from './WebCamChat.module.css';
 
 interface Props {
   rtcConnection: MyRTCconnector;
@@ -21,7 +22,7 @@ export default function RemoteVideo({ rtcConnection }: Props): JSX.Element {
 
   return (
     <video
-      className="video"
+      className={styles.video}
       ref={remoteVideoRef}
       controls
       playsInline
@@ -29,6 +30,5 @@ export default function RemoteVideo({ rtcConnection }: Props): JSX.Element {
       muted={false}
       onCanPlay={() => (remoteVideoRef.current?.play())}
     />
-
   );
 }

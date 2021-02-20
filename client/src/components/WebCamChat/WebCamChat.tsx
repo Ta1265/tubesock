@@ -1,7 +1,7 @@
 import React, { createRef } from 'react';
 import MyRTCconnector from '../../myRTCconnector';
 import RemoteVideo from './RemoteVideo';
-import './WebCamChat.css';
+import styles from './WebCamChat.module.css';
 
 interface Props {
   socket: SocketIOClient.Socket;
@@ -108,10 +108,10 @@ export default class WebCamChat extends React.Component<Props, State> {
     const { connections } = this.state;
     const { socket } = this.props;
     return (
-      <div className="WebCamChatContainer">
-        <div className="webcamwrapper">
+      <div className={styles.WebCamChatContainer}>
+        <div className={styles.webcamwrapper}>
           <video
-            className="video"
+            className={styles.video}
             ref={this.localVideoRef}
             autoPlay
             playsInline

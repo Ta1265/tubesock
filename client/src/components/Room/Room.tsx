@@ -4,7 +4,7 @@ import Chat from '../Chat/Chat';
 import YouTubePlayer from '../YouTubePlayer/YouTubePlayer';
 import VideoSearch from '../VideoSearch/VideoSearch';
 import WebCamChat from '../WebCamChat/WebCamChat';
-import './Room.css';
+import styles from './Room.module.css';
 
 const socket: SocketIOClient.Socket = io();
 
@@ -21,8 +21,8 @@ const Room = ({
   setNumConnections,
   numConnections,
 }: Props): JSX.Element => (
-  <div className="roomContainer">
-    <div className="containerOne">
+  <div className={styles.roomContainer}>
+    <div className={styles.containerOne}>
       <YouTubePlayer socket={socket} />
       <WebCamChat
         socket={socket}
@@ -32,7 +32,7 @@ const Room = ({
         userName={userName}
       />
     </div>
-    <div className="containerTwo">
+    <div className={styles.containerTwo}>
       <Chat socket={socket} />
       <VideoSearch
         socket={socket}

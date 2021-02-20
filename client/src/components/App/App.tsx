@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import NavBar from '../NavBar/NavBar';
 import JoinPrompt from '../JoinPrompt/JoinPrompt';
 import Room from '../Room/Room';
-import './App.css';
+import styles from './app.module.css';
 
 const App = (): JSX.Element => {
   const [userName, setUserName] = useState('');
@@ -11,7 +11,7 @@ const App = (): JSX.Element => {
   const [prompt, setPrompt] = useState(true);
 
   return (
-    <div className="app">
+    <div className={styles.app}>
       <NavBar
         userName={userName}
         roomName={roomName}
